@@ -60,7 +60,7 @@ async function main() {
     while (true) {
         const question = await getInput(
             chalk.blue(
-                'Ask your question (Enter a blank line to finish input): ',
+                '\nAsk your question (Enter a blank line to finish input): ',
             ),
         );
 
@@ -75,7 +75,7 @@ async function main() {
         spinner.stop();
 
         const response = aiResponse.text;
-        console.log(chalk.green(`AI Assistant: ${response}`));
+        console.log(chalk.green(`\nAI Assistant: ${response}`));
 
         messages.push(new AIChatMessage(response));
 
@@ -86,7 +86,7 @@ async function main() {
 
         console.log(
             chalk.magenta(
-                `Tokens used in the previous Q/A: ${tokensUsed.totalCount}`,
+                `\nTokens used in the previous Q/A: ${tokensUsed.totalCount}`,
             ),
         );
         console.log(
