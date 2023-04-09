@@ -12,23 +12,12 @@ import {
     SystemChatMessage,
 } from 'langchain/schema';
 
-function readConfig(): { [key: string]: string } {
-    const configPath = '.aisderc';
-    if (fs.existsSync(configPath)) {
-        const configData = fs.readFileSync(configPath, 'utf-8');
-        return JSON.parse(configData);
-    }
-    return {};
-}
+// Import with the .js extension, even though the actual file is a TypeScript file.
+// This is because we have "type": "module" in package.json, and Node.js expects the final
+// extension of the compiled JavaScript files in the import statement when using ES modules.
+import config from './config.js';
 
 async function main() {
-    const config = readConfig();
-
-    // Read API_KEY from config file
-    if (!config.api_key) {
-        console.log('Please provide an API key in aisde.json');
-        return;
-    }
     const source_code_path = config.source_code_path || ['src/**/*.{ts,tsx}'];
     const include_files = config.include_files || ['package.json'];
 
