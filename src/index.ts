@@ -2,6 +2,12 @@
 
 import readline from "readline";
 import fs from "fs";
+import { ChatOpenAI } from "langchain/chat_models";
+import {
+    HumanChatMessage,
+    AIChatMessage,
+    SystemChatMessage,
+} from "langchain/schema";
 
 function readConfig(): { [key: string]: string } {
     const configPath = "aisde.json";
@@ -21,8 +27,13 @@ async function main() {
         return;
     }
 
+    const chat = new ChatOpenAI({ openAIApiKey: config.api_key });
+
     console.log("Welcome to the AISDE!");
-    let chatHistory = "";
+
+    let messages = [
+        new SystemChatMessage("You are an AI developer assistant."),
+    ];
 
     while (true) {
         const question = await getInput("Ask your question: ");
@@ -31,10 +42,13 @@ async function main() {
             break;
         }
 
-        const response = "TODO";
+        messages.push(new HumanChatMessage(question));
+
+        const aiResponse = await chat.call(messages);
+        const response = aiResponse.text;
         console.log(`AI Assistant: ${response}`);
 
-        chatHistory += `User: ${question}\nAI Assistant: ${response}\n`;
+        messages.push(new AIChatMessage(response));
     }
 }
 
