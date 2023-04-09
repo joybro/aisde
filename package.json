@@ -1,16 +1,23 @@
 {
-  "name": "aisde",
-  "version": "1.0.0",
-  "description": "GPT based AI tool that understands your code and helps you develop",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@types/node": "^18.15.11",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.0.4"
-  }
+    "name": "aisde",
+    "version": "1.0.0",
+    "description": "A GPT-powered AI tool that comprehends your codebase and assists you in the development process",
+    "main": "dist/index.js",
+    "bin": {
+        "aisde": "./dist/index.js"
+    },
+    "scripts": {
+        "build": "tsc",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": {
+        "name": "Young Lee",
+        "email": "joybro201@gmail.com"
+    },
+    "license": "ISC",
+    "devDependencies": {
+        "@types/node": "^18.15.11",
+        "ts-node": "^10.9.1",
+        "typescript": "^5.0.4"
+    }
 }
