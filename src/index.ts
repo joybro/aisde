@@ -57,7 +57,11 @@ async function main() {
     ];
 
     while (true) {
-        const question = await getInput(chalk.blue('Ask your question: '));
+        const question = await getInput(
+            chalk.blue(
+                'Ask your question (Enter a blank line to finish input): ',
+            ),
+        );
 
         if (question.toLowerCase() === 'quit') {
             break;
@@ -102,9 +106,15 @@ function getInput(prompt: string): Promise<string> {
     });
 
     return new Promise(resolve => {
-        rl.question(prompt, input => {
-            rl.close();
-            resolve(input);
+        let input = '';
+        console.log(prompt);
+        rl.on('line', line => {
+            if (line.trim() === '') {
+                rl.close();
+                resolve(input.trim());
+            } else {
+                input += line + '\n';
+            }
         });
     });
 }
