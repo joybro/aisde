@@ -103,21 +103,26 @@ async function main() {
     }
 }
 
-function getInput(prompt: string): Promise<string> {
+function getInput(promptMessage: string): Promise<string> {
     const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout,
+        prompt: '> ',
     });
 
+    console.log(promptMessage);
+    rl.prompt();
+
     return new Promise(resolve => {
-        let input = '';
-        console.log(prompt);
+        const lines: string[] = [];
+
         rl.on('line', line => {
             if (line.trim() === '') {
                 rl.close();
-                resolve(input.trim());
+                resolve(lines.join('\n'));
             } else {
-                input += line + '\n';
+                lines.push(line);
+                rl.prompt();
             }
         });
     });
