@@ -1,0 +1,16 @@
+{
+  "name": "aisde",
+  "version": "1.0.0",
+  "description": "GPT based AI tool that understands your code and helps you develop",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^18.15.11",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  }
+}
