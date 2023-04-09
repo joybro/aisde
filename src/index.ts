@@ -1,18 +1,18 @@
 #!/usr/bin/env node
 
-import readline from "readline";
-import fs from "fs";
-import { ChatOpenAI } from "langchain/chat_models";
+import readline from 'readline';
+import fs from 'fs';
+import { ChatOpenAI } from 'langchain/chat_models';
 import {
     HumanChatMessage,
     AIChatMessage,
     SystemChatMessage,
-} from "langchain/schema";
+} from 'langchain/schema';
 
 function readConfig(): { [key: string]: string } {
-    const configPath = "aisde.json";
+    const configPath = 'aisde.json';
     if (fs.existsSync(configPath)) {
-        const configData = fs.readFileSync(configPath, "utf-8");
+        const configData = fs.readFileSync(configPath, 'utf-8');
         return JSON.parse(configData);
     }
     return {};
@@ -23,22 +23,22 @@ async function main() {
 
     // Update API_KEY and API_ENDPOINT from config if they exist
     if (!config.api_key) {
-        console.log("Please provide an API key in aisde.json");
+        console.log('Please provide an API key in aisde.json');
         return;
     }
 
     const chat = new ChatOpenAI({ openAIApiKey: config.api_key });
 
-    console.log("Welcome to the AISDE!");
+    console.log('Welcome to the AISDE!');
 
     let messages = [
-        new SystemChatMessage("You are an AI developer assistant."),
+        new SystemChatMessage('You are an AI developer assistant.'),
     ];
 
     while (true) {
-        const question = await getInput("Ask your question: ");
+        const question = await getInput('Ask your question: ');
 
-        if (question.toLowerCase() === "quit") {
+        if (question.toLowerCase() === 'quit') {
             break;
         }
 
@@ -58,8 +58,8 @@ function getInput(prompt: string): Promise<string> {
         output: process.stdout,
     });
 
-    return new Promise((resolve) => {
-        rl.question(prompt, (input) => {
+    return new Promise(resolve => {
+        rl.question(prompt, input => {
             rl.close();
             resolve(input);
         });
