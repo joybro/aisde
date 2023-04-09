@@ -87,8 +87,9 @@ async function main() {
         console.log(
             chalk.yellow(
                 `Estimated cost for the current session: ${(
-                    totalTokensUsed * gpt_3_5_turbo_price
-                ).toFixed(3)}$`,
+                    (totalTokensUsed / 1000.0) *
+                    gpt_3_5_turbo_price
+                ).toFixed(4)}$`,
             ),
         );
     }
