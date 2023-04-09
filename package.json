@@ -37,6 +37,7 @@
         "@dqbd/tiktoken": "^1.0.4",
         "chalk": "^5.2.0",
         "glob": "^9.3.4",
-        "langchain": "^0.0.51"
+        "langchain": "^0.0.51",
+        "ora": "^6.3.0"
     }
 }

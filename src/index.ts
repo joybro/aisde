@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import ora from 'ora';
 import readline from 'readline';
 import fs from 'fs';
 import glob from 'glob';
@@ -69,7 +70,10 @@ async function main() {
 
         messages.push(new HumanChatMessage(question));
 
+        const spinner = ora('Thinking...').start();
         const aiResponse = await chat.call(messages);
+        spinner.stop();
+
         const response = aiResponse.text;
         console.log(chalk.green(`AI Assistant: ${response}`));
 
