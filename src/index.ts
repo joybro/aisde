@@ -3,6 +3,7 @@
 import readline from 'readline';
 import fs from 'fs';
 import path from 'path';
+import glob from 'glob';
 import { ChatOpenAI } from 'langchain/chat_models';
 import {
     HumanChatMessage,
@@ -27,22 +28,20 @@ async function main() {
         console.log('Please provide an API key in aisde.json');
         return;
     }
+    const source_code_path = config.source_code_path || 'src/**/*.ts';
+    const include_files = config.include_files || ['package.json'];
 
     const chat = new ChatOpenAI({ openAIApiKey: config.api_key });
+    let totalTokensUsed = 0;
 
     console.log('Welcome to the AISDE!');
 
-    // Read index.ts and package.json contents
-    const packageJsonContent = fs.readFileSync('package.json', 'utf-8');
+    // Find all source files and read their contents
+    const files = glob.sync(source_code_path).concat(include_files);
 
-    const srcDir = 'src';
-
-    // Find all ts files in the src directory and read their contents
-    const tsFiles = fs
-        .readdirSync(srcDir)
-        .filter(file => path.extname(file) === '.ts')
+    const codeChatMessages = files
         .map(file => {
-            const path = `${srcDir}/${file}`;
+            const path = `${file}`;
             return [path, fs.readFileSync(path, 'utf-8')];
         })
         .map(
@@ -54,10 +53,7 @@ async function main() {
 
     let messages = [
         new SystemChatMessage('You are an AI developer assistant.'),
-        new SystemChatMessage(
-            `Here is the content of package.json:\n${packageJsonContent}`,
-        ),
-        ...tsFiles,
+        ...codeChatMessages,
     ];
 
     while (true) {
@@ -74,6 +70,14 @@ async function main() {
         console.log(`AI Assistant: ${response}`);
 
         messages.push(new AIChatMessage(response));
+
+        const tokensUsed = await chat.getNumTokensFromMessages(messages);
+        totalTokensUsed += tokensUsed.totalCount;
+
+        console.log(
+            `Tokens used in the previous Q/A: ${tokensUsed.totalCount}`,
+        );
+        console.log(`Total tokens used so far: ${totalTokensUsed}`);
     }
 }
 

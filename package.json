@@ -32,6 +32,8 @@
         "typescript": "^5.0.4"
     },
     "dependencies": {
+        "@dqbd/tiktoken": "^1.0.4",
+        "glob": "^9.3.4",
         "langchain": "^0.0.51"
     }
 }
