@@ -29,7 +29,7 @@ async function main() {
         console.log('Please provide an API key in aisde.json');
         return;
     }
-    const source_code_path = config.source_code_path || 'src/**/*.{ts,tsx}';
+    const source_code_path = config.source_code_path || ['src/**/*.{ts,tsx}'];
     const include_files = config.include_files || ['package.json'];
 
     const chat = new ChatOpenAI({ openAIApiKey: config.api_key });
