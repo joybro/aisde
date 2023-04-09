@@ -53,7 +53,11 @@ async function main() {
         );
 
     let messages = [
-        new SystemChatMessage('You are an AI developer assistant.'),
+        new SystemChatMessage(
+            'You are an AI developer assistant assisting the user in developing and enhancing' +
+                " a software package. The package's code is provided below. When suggesting changes " +
+                'to the code, please highlight the differences using +/-, similar to the git diff format.',
+        ),
         ...codeChatMessages,
     ];
 
