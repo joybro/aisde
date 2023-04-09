@@ -10,7 +10,7 @@ import {
 } from 'langchain/schema';
 
 function readConfig(): { [key: string]: string } {
-    const configPath = 'aisde.json';
+    const configPath = '.aisderc';
     if (fs.existsSync(configPath)) {
         const configData = fs.readFileSync(configPath, 'utf-8');
         return JSON.parse(configData);
