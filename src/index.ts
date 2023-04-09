@@ -2,8 +2,8 @@
 
 import readline from 'readline';
 import fs from 'fs';
-import path from 'path';
 import glob from 'glob';
+import chalk from 'chalk';
 import { ChatOpenAI } from 'langchain/chat_models';
 import {
     HumanChatMessage,
@@ -57,7 +57,7 @@ async function main() {
     ];
 
     while (true) {
-        const question = await getInput('Ask your question: ');
+        const question = await getInput(chalk.blue('Ask your question: '));
 
         if (question.toLowerCase() === 'quit') {
             break;
@@ -67,17 +67,30 @@ async function main() {
 
         const aiResponse = await chat.call(messages);
         const response = aiResponse.text;
-        console.log(`AI Assistant: ${response}`);
+        console.log(chalk.green(`AI Assistant: ${response}`));
 
         messages.push(new AIChatMessage(response));
 
         const tokensUsed = await chat.getNumTokensFromMessages(messages);
         totalTokensUsed += tokensUsed.totalCount;
 
+        const gpt_3_5_turbo_price = 0.0002;
+
         console.log(
-            `Tokens used in the previous Q/A: ${tokensUsed.totalCount}`,
+            chalk.magenta(
+                `Tokens used in the previous Q/A: ${tokensUsed.totalCount}`,
+            ),
         );
-        console.log(`Total tokens used so far: ${totalTokensUsed}`);
+        console.log(
+            chalk.magenta(`Total tokens used so far: ${totalTokensUsed}`),
+        );
+        console.log(
+            chalk.yellow(
+                `Estimated cost for the current session: ${(
+                    totalTokensUsed * gpt_3_5_turbo_price
+                ).toFixed(3)}$`,
+            ),
+        );
     }
 }
 
