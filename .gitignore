@@ -1,4 +1,5 @@
 node_modules
 dist
+.vector_store
 
 package-lock.json

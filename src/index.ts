@@ -2,6 +2,7 @@
 
 import { ChatOpenAI } from 'langchain/chat_models';
 import { HumanChatMessage, AIChatMessage } from 'langchain/schema';
+import { OpenAIEmbeddings } from 'langchain/embeddings';
 
 // Import with the .js extension, even though the actual file is a TypeScript file.
 // This is because we have "type": "module" in package.json, and Node.js expects the final
@@ -11,6 +12,7 @@ import CodebaseService from './codebase-service.js';
 import ChatHistory from './chat-history.js';
 import IOHandler from './io-handler.js';
 import AIInputGenerator from './ai-input-generator.js';
+import VectorStore from './vector-store.js';
 
 async function main() {
     const chatHistory = new ChatHistory(200);
@@ -18,8 +20,19 @@ async function main() {
         openAIApiKey: config.api_key,
         temperature: 0.4,
     });
-    const codebase = new CodebaseService();
+    const source_files = config.source_files;
+    const additional_files = config.additional_files;
+    const embeddings = new OpenAIEmbeddings({
+        openAIApiKey: config.api_key,
+    });
     const ioHandler = new IOHandler();
+    const codebase = new CodebaseService(
+        new VectorStore(embeddings, config.vector_store_local_path),
+        ioHandler,
+        source_files.concat(additional_files),
+    );
+    await codebase.init();
+
     const aiInputGenerator = new AIInputGenerator(
         codebase,
         chatHistory,
@@ -30,17 +43,20 @@ async function main() {
     ioHandler.printWelcomeMessage();
 
     while (true) {
-        const question = await ioHandler.getUserInput(
+        const userInput = await ioHandler.getUserInput(
             '\nAsk your question (Enter a blank line to finish input): ',
         );
 
-        if (question.toLowerCase() === 'quit') {
+        if (userInput.toLowerCase() === 'quit') {
             break;
         }
 
-        chatHistory.addMessage(new HumanChatMessage(question));
+        chatHistory.addMessage(new HumanChatMessage(userInput));
 
-        const messages = await aiInputGenerator.generateForChatModel(chat);
+        const messages = await aiInputGenerator.generateForChatModel(
+            chat,
+            userInput,
+        );
 
         try {
             ioHandler.showSpinner(true);
