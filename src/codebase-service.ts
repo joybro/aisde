@@ -18,18 +18,22 @@ class CodebaseService {
         this.filePaths = filePaths;
     }
 
-    async init(): Promise<void> {
-        try {
-            await this.vectorStore.load();
-
-            this.ioHandler.printInfo(
-                `Vector store successfully loaded from file with ${this.vectorStore.getVectorCount()} vectors.`,
-            );
-        } catch (error) {
-            this.ioHandler.printWarning(
-                'Failed to load vector store from file. Creating a new one...',
-            );
+    async init(cleanStart: boolean): Promise<void> {
+        if (cleanStart) {
             await this.refreshVectorStore();
+        } else {
+            try {
+                await this.vectorStore.load();
+
+                this.ioHandler.printInfo(
+                    `Vector store successfully loaded from file with ${this.vectorStore.getVectorCount()} vectors.`,
+                );
+            } catch (error) {
+                this.ioHandler.printWarning(
+                    'Failed to load vector store from file. Creating a new one...',
+                );
+                await this.refreshVectorStore();
+            }
         }
 
         // Periodically update the vector store

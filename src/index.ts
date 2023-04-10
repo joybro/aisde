@@ -3,6 +3,7 @@
 import { ChatOpenAI } from 'langchain/chat_models';
 import { HumanChatMessage, AIChatMessage } from 'langchain/schema';
 import { OpenAIEmbeddings } from 'langchain/embeddings';
+import { program } from 'commander';
 
 // Import with the .js extension, even though the actual file is a TypeScript file.
 // This is because we have "type": "module" in package.json, and Node.js expects the final
@@ -14,7 +15,7 @@ import IOHandler from './io-handler.js';
 import AIInputGenerator from './ai-input-generator.js';
 import VectorStore from './vector-store.js';
 
-async function main() {
+async function main(cleanVectorStore: boolean) {
     const chatHistory = new ChatHistory(200);
     const chat = new ChatOpenAI({
         openAIApiKey: config.api_key,
@@ -29,7 +30,7 @@ async function main() {
         ioHandler,
         config.files,
     );
-    await codebase.init();
+    await codebase.init(cleanVectorStore);
 
     const aiInputGenerator = new AIInputGenerator(
         codebase,
@@ -86,4 +87,11 @@ async function main() {
     process.exit(0);
 }
 
-main();
+program.option(
+    '-c, --clean-vector-store',
+    'Start with a new clean vector store',
+);
+
+program.parse();
+
+main(program.opts().cleanVectorStore || false);
