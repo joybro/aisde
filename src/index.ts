@@ -18,7 +18,7 @@ async function main() {
     const chatHistory = new ChatHistory(200);
     const chat = new ChatOpenAI({
         openAIApiKey: config.api_key,
-        temperature: 0.4,
+        temperature: config.temperature,
     });
     const source_files = config.source_files;
     const additional_files = config.additional_files;
