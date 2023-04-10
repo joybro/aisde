@@ -1,8 +1,5 @@
 #!/usr/bin/env node
 
-import ora from 'ora';
-import readline from 'readline';
-import chalk from 'chalk';
 import { ChatOpenAI } from 'langchain/chat_models';
 import {
     HumanChatMessage,
@@ -17,6 +14,7 @@ import {
 import config from './config.js';
 import CodebaseService from './codebase-service.js';
 import ChatHistory from './chat-history.js';
+import IOHandler from './io-handler.js';
 
 async function main() {
     const source_code_path = config.source_code_path || ['src/**/*.{ts,tsx}'];
@@ -24,11 +22,11 @@ async function main() {
 
     const chatHistory = new ChatHistory(200);
     const chat = new ChatOpenAI({ openAIApiKey: config.api_key });
+    const codebase = new CodebaseService();
+    const ioHandler = new IOHandler();
     let totalTokensUsed = 0;
 
-    console.log('Welcome to the AISDE!');
-
-    const codebase = new CodebaseService();
+    ioHandler.printWelcomeMessage();
 
     // Find all source files and read their contents
     const filepaths = codebase.find(source_code_path).concat(include_files);
@@ -42,10 +40,8 @@ async function main() {
         );
 
     while (true) {
-        const question = await getInput(
-            chalk.blue(
-                '\nAsk your question (Enter a blank line to finish input): ',
-            ),
+        const question = await ioHandler.getUserInput(
+            '\nAsk your question (Enter a blank line to finish input): ',
         );
 
         if (question.toLowerCase() === 'quit') {
@@ -70,12 +66,12 @@ async function main() {
             ...chatMsgs,
         ];
 
-        const spinner = ora('Thinking...').start();
+        ioHandler.showSpinner(true);
         const aiResponse = await chat.call(messages);
-        spinner.stop();
+        ioHandler.showSpinner(false);
 
         const response = aiResponse.text;
-        console.log(chalk.green(`\nAI Assistant: ${response}`));
+        ioHandler.printAIResponse(response);
 
         chatHistory.addMessage(new AIChatMessage(response));
 
@@ -83,49 +79,10 @@ async function main() {
         totalTokensUsed += tokensUsed.totalCount;
 
         const gpt_3_5_turbo_price = 0.0002;
+        const cost = (totalTokensUsed / 1000.0) * gpt_3_5_turbo_price;
 
-        console.log(
-            chalk.magenta(
-                `\nTokens used in the previous Q/A: ${tokensUsed.totalCount}`,
-            ),
-        );
-        console.log(
-            chalk.magenta(`Total tokens used so far: ${totalTokensUsed}`),
-        );
-        console.log(
-            chalk.yellow(
-                `Estimated cost for the current session: ${(
-                    (totalTokensUsed / 1000.0) *
-                    gpt_3_5_turbo_price
-                ).toFixed(4)}$`,
-            ),
-        );
+        ioHandler.printTokenUsage(tokensUsed.totalCount, totalTokensUsed, cost);
     }
-}
-
-function getInput(promptMessage: string): Promise<string> {
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-        prompt: '> ',
-    });
-
-    console.log(promptMessage);
-    rl.prompt();
-
-    return new Promise(resolve => {
-        const lines: string[] = [];
-
-        rl.on('line', line => {
-            if (line.trim() === '') {
-                rl.close();
-                resolve(lines.join('\n'));
-            } else {
-                lines.push(line);
-                rl.prompt();
-            }
-        });
-    });
 }
 
 main();
