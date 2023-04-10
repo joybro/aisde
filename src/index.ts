@@ -2,8 +2,6 @@
 
 import ora from 'ora';
 import readline from 'readline';
-import fs from 'fs';
-import glob from 'glob';
 import chalk from 'chalk';
 import { ChatOpenAI } from 'langchain/chat_models';
 import {
@@ -11,6 +9,7 @@ import {
     AIChatMessage,
     SystemChatMessage,
 } from 'langchain/schema';
+import CodebaseService from './codebase-service.js';
 
 // Import with the .js extension, even though the actual file is a TypeScript file.
 // This is because we have "type": "module" in package.json, and Node.js expects the final
@@ -26,14 +25,12 @@ async function main() {
 
     console.log('Welcome to the AISDE!');
 
-    // Find all source files and read their contents
-    const files = glob.sync(source_code_path).concat(include_files);
+    const codebase = new CodebaseService();
 
-    const codeChatMessages = files
-        .map(file => {
-            const path = `${file}`;
-            return [path, fs.readFileSync(path, 'utf-8')];
-        })
+    // Find all source files and read their contents
+    const filepaths = codebase.find(source_code_path).concat(include_files);
+    const codeChatMessages = filepaths
+        .map(path => [path, codebase.readFileContent(path)])
         .map(
             ([path, content]) =>
                 new SystemChatMessage(
