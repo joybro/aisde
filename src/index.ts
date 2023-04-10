@@ -41,9 +41,10 @@ async function main() {
         try {
             ioHandler.showSpinner(true);
             const aiResponse = await chat.call(messages);
+            ioHandler.showSpinner(false);
+
             const response = aiResponse.text;
             ioHandler.printAIResponse(response);
-
             chatHistory.addMessage(new AIChatMessage(response));
 
             // report token usage
@@ -58,7 +59,6 @@ async function main() {
                 totalTokensUsed,
                 cost,
             );
-            ioHandler.showSpinner(false);
         } catch (error: any) {
             ioHandler.showSpinner(false);
             ioHandler.printError(error);
