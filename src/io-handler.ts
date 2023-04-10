@@ -50,6 +50,15 @@ class IOHandler {
         }
     }
 
+    printError(error: any) {
+        console.log(chalk.red(`Error message: ${error.message}`));
+        if (error.response && error.response.data) {
+            console.log(chalk.red('Error response data:'), error.response.data);
+        } else {
+            console.log(chalk.yellow('No additional error data available'));
+        }
+    }
+
     printTokenUsage(tokensUsed: number, totalTokensUsed: number, cost: number) {
         console.log(
             chalk.magenta(`\nTokens used in the previous Q/A: ${tokensUsed}`),

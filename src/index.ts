@@ -35,22 +35,31 @@ async function main() {
 
         const messages = await aiInputGenerator.generateForChatModel(chat);
 
-        ioHandler.showSpinner(true);
-        const aiResponse = await chat.call(messages);
-        ioHandler.showSpinner(false);
+        try {
+            ioHandler.showSpinner(true);
+            const aiResponse = await chat.call(messages);
+            const response = aiResponse.text;
+            ioHandler.printAIResponse(response);
 
-        const response = aiResponse.text;
-        ioHandler.printAIResponse(response);
+            chatHistory.addMessage(new AIChatMessage(response));
 
-        chatHistory.addMessage(new AIChatMessage(response));
+            // report token usage
+            const tokensUsed = await chat.getNumTokensFromMessages(messages);
+            totalTokensUsed += tokensUsed.totalCount;
 
-        const tokensUsed = await chat.getNumTokensFromMessages(messages);
-        totalTokensUsed += tokensUsed.totalCount;
+            const gpt_3_5_turbo_price = 0.0002;
+            const cost = (totalTokensUsed / 1000.0) * gpt_3_5_turbo_price;
 
-        const gpt_3_5_turbo_price = 0.0002;
-        const cost = (totalTokensUsed / 1000.0) * gpt_3_5_turbo_price;
-
-        ioHandler.printTokenUsage(tokensUsed.totalCount, totalTokensUsed, cost);
+            ioHandler.printTokenUsage(
+                tokensUsed.totalCount,
+                totalTokensUsed,
+                cost,
+            );
+            ioHandler.showSpinner(false);
+        } catch (error: any) {
+            ioHandler.showSpinner(false);
+            ioHandler.printError(error);
+        }
     }
 }
 
