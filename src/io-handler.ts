@@ -47,7 +47,7 @@ class IOHandler {
     }
 
     printAIResponse(response: string) {
-        console.log(chalk.green(`\nAI Assistant: ${response}`));
+        console.log(chalk.green(`\nAISDE: ${response}`));
     }
 
     showSpinner(show: boolean) {
