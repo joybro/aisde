@@ -1,0 +1,9 @@
+node_modules/
+.aisderc
+.git/
+.gitignore
+.eslintcache
+.eslintrc.json
+.prettierrc
+.editorconfig
+.vscode/
