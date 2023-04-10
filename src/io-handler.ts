@@ -84,7 +84,7 @@ class IOHandler {
         );
         console.log(
             chalk.yellow(
-                `Estimated cost for the current session: ${cost.toFixed(4)}$`,
+                `Estimated cost for the current session: $${cost.toFixed(3)}`,
             ),
         );
     }

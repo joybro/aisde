@@ -96,6 +96,17 @@ AISDE: Sure, here are the TODOs in the source files and my suggested code change
 I hope this helps! Let me know if you have any other questions.
 ```
 
+## Cost
+
+AISDE uses OpenAI's `GPT-3.5-turbo` model for chat and the Embedding API to search for relevant source code. Here's a breakdown of the costs associated with each API:
+
+-   GPT-3.5-turbo Chat API: $0.002 / 1K tokens
+-   Embedding API: $0.0004 / 1K tokens
+
+(as of April 2023, https://openai.com/pricing)
+
+While interacting with AISDE, you will consume tokens from both APIs. Please be aware of these costs and manage your API usage accordingly.
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
