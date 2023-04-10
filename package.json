@@ -19,7 +19,7 @@
         "aisde": "./dist/index.js"
     },
     "scripts": {
-        "prepublishOnly": "npm run lint && npm run test",
+        "prepublishOnly": "npm run lint",
         "build": "tsc",
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "node --loader ts-node/esm src/index.ts",
