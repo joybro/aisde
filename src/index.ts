@@ -70,8 +70,8 @@ async function main(cleanVectorStore: boolean) {
             const tokensUsed = await chat.getNumTokensFromMessages(messages);
             totalTokensUsed += tokensUsed.totalCount;
 
-            const gpt_3_5_turbo_price = 0.0002;
-            const cost = (totalTokensUsed / 1000.0) * gpt_3_5_turbo_price;
+            const gpt35TurboPrice = 0.0002;
+            const cost = (totalTokensUsed / 1000.0) * gpt35TurboPrice;
 
             ioHandler.printTokenUsage(
                 tokensUsed.totalCount,
