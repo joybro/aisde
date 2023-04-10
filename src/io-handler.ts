@@ -50,6 +50,10 @@ class IOHandler {
         }
     }
 
+    printWarning(message: string) {
+        console.log(chalk.yellow(`Warning: ${message}`));
+    }
+
     printError(error: any) {
         console.log(chalk.red(`Error message: ${error.message}`));
         if (error.response && error.response.data) {

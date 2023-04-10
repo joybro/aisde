@@ -20,7 +20,11 @@ async function main() {
     });
     const codebase = new CodebaseService();
     const ioHandler = new IOHandler();
-    const aiInputGenerator = new AIInputGenerator(codebase, chatHistory);
+    const aiInputGenerator = new AIInputGenerator(
+        codebase,
+        chatHistory,
+        ioHandler,
+    );
     let totalTokensUsed = 0;
 
     ioHandler.printWelcomeMessage();

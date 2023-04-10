@@ -3,8 +3,8 @@ import * as path from 'path';
 
 const defaultConfig = {
     api_key: 'your_API_key_here',
-    source_code_path: ['src/**/*.{ts,tsx}'],
-    include_files: ['package.json'],
+    source_files: ['src/**/*.{ts,tsx}'],
+    additional_files: ['package.json'],
 };
 
 type Config = typeof defaultConfig;
