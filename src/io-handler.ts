@@ -20,16 +20,24 @@ class IOHandler {
         rl.prompt();
 
         return new Promise(resolve => {
-            const lines: string[] = [];
+            let lines: string[] = [];
 
             rl.on('line', line => {
                 if (line.trim() === '') {
                     rl.close();
-                    resolve(lines.join('\n'));
                 } else {
                     lines.push(line);
                     rl.prompt();
                 }
+            });
+
+            rl.on('close', () => {
+                resolve(lines.join('\n'));
+            });
+
+            rl.on('SIGINT', () => {
+                lines = ['quit'];
+                rl.close();
             });
         });
     }

@@ -84,6 +84,8 @@ async function main() {
             ioHandler.printError(error);
         }
     }
+
+    process.exit(0);
 }
 
 main();
