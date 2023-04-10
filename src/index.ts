@@ -14,7 +14,10 @@ import AIInputGenerator from './ai-input-generator.js';
 
 async function main() {
     const chatHistory = new ChatHistory(200);
-    const chat = new ChatOpenAI({ openAIApiKey: config.api_key });
+    const chat = new ChatOpenAI({
+        openAIApiKey: config.api_key,
+        temperature: 0.4,
+    });
     const codebase = new CodebaseService();
     const ioHandler = new IOHandler();
     const aiInputGenerator = new AIInputGenerator(codebase, chatHistory);
