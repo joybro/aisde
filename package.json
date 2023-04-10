@@ -1,6 +1,6 @@
 {
     "name": "aisde",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "type": "module",
     "description": "A GPT-powered AI tool that comprehends your codebase and assists you in the development process",
     "keywords": [
