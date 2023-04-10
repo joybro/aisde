@@ -3,11 +3,23 @@
     "version": "1.0.0",
     "type": "module",
     "description": "A GPT-powered AI tool that comprehends your codebase and assists you in the development process",
+    "keywords": [
+        "AI",
+        "GPT",
+        "openAI",
+        "development",
+        "tool"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/joybro/aisde.git"
+    },
     "main": "dist/index.js",
     "bin": {
         "aisde": "./dist/index.js"
     },
     "scripts": {
+        "prepublishOnly": "npm run lint && npm run test",
         "build": "tsc",
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "node --loader ts-node/esm src/index.ts",

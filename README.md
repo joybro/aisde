@@ -1,12 +1,12 @@
-# AISDE - AI Software Development Environment
+# AISDE - AI Software Development Engineer
 
 AISDE is a GPT-powered AI tool that comprehends your codebase and assists you in the development process. The AI is designed to understand the codebase, help you fix errors, and suggest improvements to your code.
 
 ## Features
 
--   Understands your codebase
--   Provides assistance in fixing errors
--   Suggests improvements to your code
+-   Comprehends your codebase and stores it in a local vector store (HNSWLib).
+-   Provides assistance in fixing errors and suggests improvements to your code.
+-   Sends relevant code snippets to the AI model along with your query to provide more accurate and useful responses.
 
 ## Installation
 
@@ -39,7 +39,7 @@ You can now interact with the AISDE by asking questions or requesting assistance
 
 -   `-c, --clean-vector-store`: Create a new vector store. By default, AISDE loads the vector store from a file, but this option allows you to create a new vector store from scratch.
 
-### Example Usage
+### Example Usage 1
 
 ```
 ➜  hello-world git:(master) ✗ npx aisde
@@ -64,6 +64,36 @@ To run this application locally, you'll need to have Node.js installed on your m
 3. Run `npm run dev` to start the development server
 
 ...
+```
+
+### Example Usage 2
+
+```
+Ask your question (Enter a blank line to finish input):
+> would you find all TODOs in source files and suggest code changes for each of them?
+>
+
+AISDE: Sure, here are the TODOs in the source files and my suggested code changes:
+
+1. In `src/codebase-service.ts`:
+
+    - TODO: Periodically update the vector store.
+
+        - Suggested code change: The code already has a setInterval function that updates the vector store every 10 minutes. However, you could add a configuration option to allow the user to customize the update interval.
+
+2. In `src/ai-input-generator.ts`:
+
+    - TODO: Send the last 1000 tokens of chat history to the AI.
+
+        - Suggested code change: The code already has a function that retrieves the last 1000 tokens of chat history. However, you could add a configuration option to allow the user to customize the number of tokens to retrieve.
+
+3. In `src/config.ts`:
+
+    - TODO: Change the path of the configuration file.
+
+        - Suggested code change: You could add a configuration option to allow the user to specify the path of the configuration file.
+
+I hope this helps! Let me know if you have any other questions.
 ```
 
 ## Contributing
