@@ -13,9 +13,9 @@ class CodebaseService {
         ioHandler: IOHandler,
         filePaths: string[],
     ) {
+        this.vectorStore = vectorStore;
         this.ioHandler = ioHandler;
         this.filePaths = filePaths;
-        this.vectorStore = vectorStore;
     }
 
     async init(): Promise<void> {

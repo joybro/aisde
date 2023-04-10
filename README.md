@@ -21,8 +21,7 @@ In your project's root directory, create a .aisderc configuration file with the 
 ```
 {
   "api_key": "your_OpenAI_API_key_here",
-  "source_code_path": ["src/**/*.{ts,tsx}"],
-  "include_files": ["package.json"]
+  "files": ["src/**/*.{ts,tsx}", "package.json", "README.md"],
 }
 ```
 

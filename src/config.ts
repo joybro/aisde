@@ -4,8 +4,7 @@ import * as path from 'path';
 const defaultConfig = {
     api_key: 'your_API_key_here',
     temperature: 0.4,
-    source_files: ['src/**/*.{ts,tsx}'],
-    additional_files: ['package.json'],
+    files: ['src/**/*.{ts,tsx}', 'package.json'],
     vector_store_local_path: '.vector_store',
 };
 

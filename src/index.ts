@@ -20,8 +20,6 @@ async function main() {
         openAIApiKey: config.api_key,
         temperature: config.temperature,
     });
-    const source_files = config.source_files;
-    const additional_files = config.additional_files;
     const embeddings = new OpenAIEmbeddings({
         openAIApiKey: config.api_key,
     });
@@ -29,7 +27,7 @@ async function main() {
     const codebase = new CodebaseService(
         new VectorStore(embeddings, config.vector_store_local_path),
         ioHandler,
-        source_files.concat(additional_files),
+        config.files,
     );
     await codebase.init();
 
